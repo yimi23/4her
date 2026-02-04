@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  HOW TO UPDATE THIS SITE (Easy Guide)                       ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    🔄 TO UPDATE THE "LAST UPDATED" DATE:
+       → Line 51: Change the date in <span class="ongoing__date" id="lastUpdated">
+       → Example: February 14, 2026
+    
+    📝 TO UPDATE THE LETTER:
+       → Lines 92-115: Edit the paragraphs in <section class="letter">
+       → Just change the text between <p> and </p>
+    
+    📸 TO ADD NEW MEMORIES TO CAROUSEL:
+       → Lines 177-314: Copy any <div class="card"> block
+       → Change the image/video filename (data-src and src)
+       → Paste before line 315 (before </div> that closes carousel__track)
+    
+    🎬 TO ADD NEW VIDEO CHAPTERS:
+       → Lines 127-148: Copy a chapter button block
+       → Change data-src to your new video filename
+       → Change the chapter number
+    
+    🚀 TO DEPLOY UPDATES:
+       1. Save this file
+       2. Go to netlify.com
+       3. Drag the entire "4her" folder to your site
+       4. PWA auto-updates on her phone within 24 hours
+    
+    💜 Your courage in building this matters more than perfection.
+    -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>For Adufe</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="For Adufe">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+    
+    <!-- Hero Section - Intro Video WITH SOUND -->
+    <section class="hero" id="hero">
+        <video class="hero__video" autoplay playsinline>
+            <source src="videos/into.MOV" type="video/mp4">
+        </video>
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <h1 class="hero__title" data-text="For Adufe">For Adufe</h1>
+        </div>
+        <div class="hero__scroll">
+            <span>Scroll</span>
+            <div class="hero__scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Letter Section -->
+    <section class="letter" id="letter">
+        <div class="container container--narrow">
+            <div class="letter__content">
+                <p class="letter__greeting">Adufe,</p>
+                
+                <p>I hope when you read this, you realize I'm on a journey to make this work. <strong>For real.</strong></p>
+                
+                <p>Not out of fear. Not out of yearning. Out of the realization that I'm truly in love with one person.</p>
+                
+                <p>God willing, I grow in this process. Not rushed. Because the times I rushed, I forgot who put me in this position. His name is Jesus.</p>
+                
+                <p>So I'm slowing down. Moving at your pace. Treating you with the respect you deserve because I'm trying to honor you. And honor what God has taught us love is supposed to be.</p>
+                
+                <p class="letter__emphasis"><em>"Being in love"</em> is easy to say. So I hope my actions teach me, in this slowed process, how to love you the way Jesus loves you.</p>
+                
+                <p>I'm not comparing myself to Him. His love has no conditions. I'm flawed. I could write a whole list of things wrong with me.</p>
+                
+                <p>But one thing I know for sure, after months, after days, even after breaking up, I realized I'm so in love with one person.</p>
+                
+                <p class="letter__highlight">You.</p>
+                
+                <p>Adufe, I don't think anyone comes close.</p>
+                
+                <p>I pray about you because I don't want to mess up what God is doing in your life.</p>
+                
+                <p>So what am I trying to say?</p>
+                
+                <p class="letter__final">With God leading and me putting in the effort, I hope you'll accept to be my Valentine. I hope this slow journey works. And I hope I treat you right.</p>
+                
+                <p class="letter__signature">With love and intention,<br><strong>Praise</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Story - Video Chapters -->
+    <section class="story" id="story">
+        <div class="container">
+            <div class="story__player">
+                <div class="player">
+                    <video class="player__video" id="storyVideo" controls>
+                        <source src="videos/2nd.MOV" type="video/mp4">
+                    </video>
+                    
+                    <div class="player__ui">
+                        <div class="player__chapters" id="chapters">
+                            <button class="chapter active" data-src="videos/2nd.MOV" data-index="0">
+                                <span class="chapter__number">01</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7581.MOV" data-index="1">
+                                <span class="chapter__number">02</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7582.MOV" data-index="2">
+                                <span class="chapter__number">03</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7584.MOV" data-index="3">
+                                <span class="chapter__number">04</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7585.MOV" data-index="4">
+                                <span class="chapter__number">05</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7587.MOV" data-index="5">
+                                <span class="chapter__number">06</span>
+                            </button>
+                            <button class="chapter" data-src="videos/IMG_7591.MOV" data-index="6">
+                                <span class="chapter__number">07</span>
+                            </button>
+                        </div>
+                        
+                        <div class="player__progress">
+                            <div class="player__progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <div class="player__info">
+                            <span class="player__current-chapter" id="currentChapter">Chapter 01</span>
+                            <div class="player__controls">
+                                <div class="player__speed" id="speedControl">
+                                    <button class="speed-btn" data-speed="1">1x</button>
+                                    <button class="speed-btn" data-speed="1.25">1.25x</button>
+                                    <button class="speed-btn" data-speed="1.5">1.5x</button>
+                                    <button class="speed-btn" data-speed="2">2x</button>
+                                </div>
+                                <span class="player__time" id="timeDisplay">0:00 / 0:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories Carousel -->
+    <section class="memories" id="memories">
+        <div class="container">
+            <div class="memories__header">
+                <h2 class="title">Moments I Keep Coming Back To</h2>
+            </div>
+            
+            <div class="carousel" id="carousel">
+                <button class="carousel__nav carousel__nav--prev" id="prevBtn" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                
+                <div class="carousel__track-container">
+                    <div class="carousel__track" id="carouselTrack">
+                        <!-- Row 1 -->
+                        <div class="card" data-type="image" data-src="IMG_0022.JPG">
+                            <img src="IMG_0022.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                                <button class="card__download" data-src="IMG_0022.JPG">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_3624.PNG">
+                            <img src="IMG_3624.PNG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 1 -->
+                        <div class="card card--video" data-type="video" data-src="IMG_3749.mov">
+                            <video src="IMG_3749.mov" muted loop playsinline></video>
+                            <div class="card__overlay">
+                                <span class="card__type">Video</span>
+                                <button class="card__play">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_3787.jpeg">
+                            <img src="IMG_3787.jpeg" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_4031.JPG">
+                            <img src="IMG_4031.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_4037.JPG">
+                            <img src="IMG_4037.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_4171.JPG">
+                            <img src="IMG_4171.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 2 -->
+                        <div class="card card--video" data-type="video" data-src="IMG_4438.MOV">
+                            <video src="IMG_4438.MOV" muted loop playsinline></video>
+                            <div class="card__overlay">
+                                <span class="card__type">Video</span>
+                                <button class="card__play">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 3 -->
+                        <div class="card card--video" data-type="video" data-src="IMG_4830.MOV">
+                            <video src="IMG_4830.MOV" muted loop playsinline></video>
+                            <div class="card__overlay">
+                                <span class="card__type">Video</span>
+                                <button class="card__play">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_4834.JPG">
+                            <img src="IMG_4834.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 4 -->
+                        <div class="card card--video" data-type="video" data-src="IMG_5158.MOV">
+                            <video src="IMG_5158.MOV" muted loop playsinline></video>
+                            <div class="card__overlay">
+                                <span class="card__type">Video</span>
+                                <button class="card__play">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_5252.JPG">
+                            <img src="IMG_5252.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_5256.JPG">
+                            <img src="IMG_5256.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_5703.JPG">
+                            <img src="IMG_5703.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" data-type="image" data-src="IMG_5714.JPG">
+                            <img src="IMG_5714.JPG" alt="Memory" loading="lazy">
+                            <div class="card__overlay">
+                                <span class="card__type">Photo</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 5 -->
+                        <div class="card card--video" data-type="video" data-src="MVI_0117.MP4">
+                            <video src="MVI_0117.MP4" muted loop playsinline></video>
+                            <div class="card__overlay">
+                                <span class="card__type">Video</span>
+                                <button class="card__play">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel__nav carousel__nav--next" id="nextBtn" aria-label="Next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+                
+                <div class="carousel__dots" id="dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ongoing Section - Before Finale -->
+    <section class="ongoing" id="ongoing">
+        <div class="container container--narrow">
+            <div class="ongoing__content">
+                <p class="ongoing__text">This isn't just for today.</p>
+                
+                <p class="ongoing__text">I'm going to keep adding to this. More memories. More letters. More moments.</p>
+                
+                <p class="ongoing__text">Because even if words are hard, I want you to know how I see us. How I see you.</p>
+                
+                <p class="ongoing__final">This is me, showing up. Over and over.</p>
+                
+                <div class="ongoing__timestamp">
+                    <span class="ongoing__label">Last Updated:</span>
+                    <span class="ongoing__date" id="lastUpdated">February 2, 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Finale - The Question -->
+    <section class="finale" id="finale">
+        <div class="container container--narrow">
+            <div class="finale__video">
+                <video controls playsinline>
+                    <source src="videos/last.MOV" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="finale__content">
+                <div class="finale__hearts">
+                    <span class="heart">💜</span>
+                </div>
+                <h2 class="finale__question">Will you be my Valentine?</h2>
+                <p class="finale__name">Adufe</p>
+                
+                <!-- Valentine Response Buttons -->
+                <div class="valentine__buttons" id="valentineButtons">
+                    <button class="valentine__btn valentine__btn--yes" id="yesBtn">
+                        Yes! 💜
+                    </button>
+                    <button class="valentine__btn valentine__btn--no" id="noBtn">
+                        No
+                    </button>
+                </div>
+                
+                <!-- Hidden Message (revealed after Yes) -->
+                <div class="valentine__message hidden" id="secretMessage">
+                    <div class="valentine__message-content">
+                        <h3>Thank you 💜</h3>
+                        <p>You made my day. Really.</p>
+                        <p>Looking forward to Valentine's with you.</p>
+                        <p class="valentine__signature">— Praise</p>
+                    </div>
+                </div>
+                
+                <!-- Stats Counter -->
+                <div class="valentine__stats" id="valentineStats">
+                    <div class="stat">
+                        <div class="stat__number" id="daysSinceMet">0</div>
+                        <div class="stat__label">Since I Made the Choice to Love You</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__number" id="memoriesShared">16</div>
+                        <div class="stat__label">Memories Shared</div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="finale__footer">
+                <p>February 2026</p>
+            </footer>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox__close" id="lightboxClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="lightbox__content" id="lightboxContent"></div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('✓ PWA registered'))
+                    .catch(err => console.log('✗ PWA registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>

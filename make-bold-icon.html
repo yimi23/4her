@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { margin: 0; display: flex; gap: 20px; align-items: center; justify-content: center; height: 100vh; background: #111; }
+        canvas { border: 2px solid #333; }
+    </style>
+</head>
+<body>
+    <canvas id="favicon" width="64" height="64"></canvas>
+    <canvas id="app" width="512" height="512"></canvas>
+    <script>
+        // Favicon (64x64 - super bold for visibility)
+        const fav = document.getElementById('favicon');
+        const fctx = fav.getContext('2d');
+        fctx.fillStyle = '#000000';
+        fctx.fillRect(0, 0, 64, 64);
+        fctx.fillStyle = '#B8860B';
+        fctx.font = 'bold 48px Arial';
+        fctx.textAlign = 'center';
+        fctx.textBaseline = 'middle';
+        fctx.fillText('4H', 32, 35);
+        
+        // App icon (512x512)
+        const app = document.getElementById('app');
+        const actx = app.getContext('2d');
+        actx.fillStyle = '#000000';
+        actx.fillRect(0, 0, 512, 512);
+        actx.fillStyle = '#B8860B';
+        actx.font = 'bold 320px Arial';
+        actx.textAlign = 'center';
+        actx.textBaseline = 'middle';
+        actx.fillText('4H', 256, 280);
+        
+        // Download both
+        setTimeout(() => {
+            fav.toBlob(blob => {
+                const link = document.createElement('a');
+                link.download = 'favicon-64.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+        }, 500);
+        
+        setTimeout(() => {
+            app.toBlob(blob => {
+                const link = document.createElement('a');
+                link.download = 'icon-512.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
