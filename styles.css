@@ -602,6 +602,8 @@ section {
 .carousel__track-container {
     overflow: hidden;
     cursor: grab;
+    touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
 }
 
 .carousel__track-container:active {
@@ -613,6 +615,7 @@ section {
     gap: var(--space-md);
     transition: transform var(--duration) var(--transition);
     will-change: transform;
+    touch-action: pan-y;
 }
 
 .card {
@@ -1185,8 +1188,8 @@ section {
     }
     
     .card {
-        width: 300px;
-        height: 400px;
+        width: min(85vw, 320px);
+        height: 450px;
     }
     
     .card__overlay {
@@ -1391,8 +1394,8 @@ section {
     
     /* Carousel */
     .card {
-        width: 260px;
-        height: 350px;
+        width: min(90vw, 280px);
+        height: 400px;
     }
     
     .carousel__track {

@@ -332,10 +332,18 @@
             this.startPos = this.getPositionX(e);
             this.track.style.cursor = 'grabbing';
             this.track.style.transition = 'none';
+            
+            // Store start time for swipe velocity
+            this.dragStartTime = Date.now();
         },
         
         drag(e) {
             if (!this.isDragging) return;
+            
+            // Prevent default scrolling on touch devices
+            if (e.type === 'touchmove') {
+                e.preventDefault();
+            }
             
             const currentPosition = this.getPositionX(e);
             const diff = currentPosition - this.startPos;
@@ -350,11 +358,15 @@
             this.track.style.cursor = 'grab';
             
             const movedBy = this.currentTranslate - this.prevTranslate;
+            const dragDuration = Date.now() - this.dragStartTime;
+            const velocity = Math.abs(movedBy) / dragDuration;
             
-            // Snap to nearest slide
-            if (movedBy < -100 && this.currentIndex < this.cards.length - 1) {
+            // Snap to nearest slide with lower threshold for mobile (50px or fast swipe)
+            const threshold = velocity > 0.3 ? 30 : 50; // Lower threshold for fast swipes
+            
+            if (movedBy < -threshold && this.currentIndex < this.cards.length - 1) {
                 this.next();
-            } else if (movedBy > 100 && this.currentIndex > 0) {
+            } else if (movedBy > threshold && this.currentIndex > 0) {
                 this.prev();
             } else {
                 this.goToSlide(this.currentIndex);
