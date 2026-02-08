@@ -1068,6 +1068,24 @@ document.addEventListener('DOMContentLoaded', function() {
     StatsCounter.init();
     
     // ================================
+    // AUTO-UPDATE "LAST UPDATED" DATE
+    // ================================
+    
+    function updateLastUpdatedDate() {
+        const lastUpdatedElement = document.getElementById('lastUpdated');
+        if (lastUpdatedElement) {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            lastUpdatedElement.textContent = formattedDate;
+            console.log('✓ Last Updated date set to:', formattedDate);
+        }
+    }
+    
+    // Update on page load
+    updateLastUpdatedDate();
+    
+    // ================================
     // CONSOLE SIGNATURE
     // ================================
     
