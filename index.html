@@ -150,11 +150,9 @@
     <!-- Noise Texture Overlay -->
     <div class="noise-overlay"></div>
     
-    <!-- Hero Section - Intro Video WITH SOUND -->
-    <section class="hero" id="hero">
-        <video class="hero__video" autoplay muted playsinline loop poster="posters/intro.jpg" preload="metadata">
-            <source src="videos/intro.MOV" type="video/mp4">
-        </video>
+    <!-- Hero Section - Animated Background -->
+    <section class="hero hero--animated" id="hero">
+        <div class="hero__animated-bg"></div>
         <div class="hero__overlay"></div>
         <div class="hero__content">
             <h1 class="hero__title" data-text="For Adufe">For Adufe</h1>
@@ -408,26 +406,18 @@
                 <div class="finale__hearts">
                     <span class="heart">💜</span>
                 </div>
-                <h2 class="finale__question">Will you be my Valentine?</h2>
+                <h2 class="finale__question">Something Special Coming Soon</h2>
                 <p class="finale__name">Adufe</p>
                 
-                <!-- Valentine Response Buttons -->
-                <div class="valentine__buttons" id="valentineButtons">
-                    <button class="valentine__btn valentine__btn--yes" id="yesBtn">
-                        Yes! 💜
-                    </button>
-                    <button class="valentine__btn valentine__btn--no" id="noBtn">
-                        No
-                    </button>
-                </div>
-                
-                <!-- Hidden Message (revealed after Yes) -->
-                <div class="valentine__message hidden" id="secretMessage">
+                <!-- Intentional Message -->
+                <div class="valentine__message" style="opacity: 1; max-height: none;">
                     <div class="valentine__message-content">
-                        <h3>Thank you 💜</h3>
-                        <p>You made my day. Really.</p>
-                        <p>Looking forward to Valentine's with you.</p>
-                        <p class="valentine__signature">— Praise</p>
+                        <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--gray-200); line-height: 1.8; text-align: center; margin-bottom: var(--space-md);">
+                            This space is being prepared with care and intention.
+                        </p>
+                        <p style="font-family: var(--font-serif); font-size: 1.125rem; color: var(--gold); font-style: italic; text-align: center;">
+                            Because some things are worth the wait.
+                        </p>
                     </div>
                 </div>
                 
