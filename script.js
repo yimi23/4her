@@ -3,24 +3,142 @@
 // Cinematic interactions & animations
 // ================================
 
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
     'use strict';
     
     // ================================
-    // HERO VIDEO - WITH SOUND
+    // LETTER MANAGEMENT SYSTEM
+    // ================================
+    
+    let lettersData = [];
+    
+    // Load letters from JSON
+    async function loadLetters() {
+        try {
+            const response = await fetch('letters/letters.json');
+            const data = await response.json();
+            lettersData = data.letters;
+            
+            buildLetterGrid();
+            setupModal();
+            
+        } catch (error) {
+            console.error('Failed to load letters:', error);
+            document.getElementById('letterGrid').innerHTML = 
+                '<p class="letter__error">Unable to load letters. Please refresh the page.</p>';
+        }
+    }
+    
+    // Build letter preview grid
+    function buildLetterGrid() {
+        const grid = document.getElementById('letterGrid');
+        
+        grid.innerHTML = lettersData.map(letter => `
+            <div class="letter__card" data-letter-id="${letter.id}">
+                <div class="card__header">
+                    <div class="card__date">${letter.date}</div>
+                    <h3 class="card__title">${letter.title}</h3>
+                </div>
+                <div class="card__preview">"${letter.preview}"</div>
+                <button class="card__read-btn">Read Letter →</button>
+            </div>
+        `).join('');
+        
+        // Add click handlers
+        grid.querySelectorAll('.letter__card').forEach(card => {
+            card.addEventListener('click', () => {
+                openLetter(card.dataset.letterId);
+            });
+        });
+    }
+    
+    // Setup modal functionality
+    function setupModal() {
+        const modal = document.getElementById('letterModal');
+        const closeBtn = document.getElementById('modalClose');
+        const backdrop = document.getElementById('modalBackdrop');
+        
+        // Close button
+        closeBtn.addEventListener('click', closeModal);
+        
+        // Click backdrop to close
+        backdrop.addEventListener('click', closeModal);
+        
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    }
+    
+    // Open letter in modal
+    function openLetter(letterId) {
+        const letter = lettersData.find(l => l.id === letterId);
+        if (!letter) return;
+        
+        const modal = document.getElementById('letterModal');
+        const content = document.getElementById('modalContent');
+        
+        // Build letter content
+        content.innerHTML = `
+            <div class="modal__header">
+                <div class="modal__date">${letter.date}</div>
+                <h2 class="modal__title">${letter.title}</h2>
+            </div>
+            <div class="modal__body">
+                ${letter.content.map(paragraph => `<p>${paragraph}</p>`).join('')}
+                <p class="letter__signature">${letter.signature}</p>
+            </div>
+        `;
+        
+        // Show modal
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+    
+    // Close modal
+    function closeModal() {
+        const modal = document.getElementById('letterModal');
+        modal.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scroll
+    }
+    
+    // Initialize letter system
+    loadLetters();
+    
+    // ================================
+    // HERO VIDEO - AUTO PLAY & PAUSE ON SCROLL
     // ================================
     
     const heroVideo = document.querySelector('.hero__video');
     if (heroVideo) {
-        // Enable sound (unmuted by default)
-        heroVideo.muted = false;
+        // Force play on load
+        heroVideo.muted = true;
         
-        // Ensure it plays with sound
-        heroVideo.play().catch(err => {
-            console.log('Autoplay with sound blocked, user interaction needed');
+        // Wait a bit for video to be ready
+        setTimeout(() => {
+            heroVideo.play().then(() => {
+                console.log('Hero video playing');
+            }).catch(err => {
+                console.error('Autoplay failed:', err);
+            });
+        }, 100);
+        
+        // Try to unmute on first user interaction
+        let hasUnmuted = false;
+        const tryUnmute = () => {
+            if (!hasUnmuted) {
+                heroVideo.muted = false;
+                heroVideo.play().catch(() => {});
+                hasUnmuted = true;
+            }
+        };
+        
+        // Unmute on any user interaction
+        ['click', 'touchstart', 'keydown'].forEach(event => {
+            document.addEventListener(event, tryUnmute, { once: true });
         });
         
-        // Pause video when scrolled past
+        // Pause video when scrolled away
         const heroSection = document.querySelector('.hero');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -29,10 +147,15 @@
                     heroVideo.pause();
                 } else {
                     // Hero is in view, play video
-                    heroVideo.play().catch(() => {});
+                    if (heroVideo.paused) {
+                        heroVideo.play().catch(() => {});
+                    }
                 }
             });
-        }, { threshold: 0.1 });
+        }, { 
+            threshold: 0.25,  // Pause when 75% scrolled away
+            rootMargin: '0px'
+        });
         
         observer.observe(heroSection);
     }
@@ -694,6 +817,8 @@
         buttonsContainer: document.getElementById('valentineButtons'),
         secretMessage: document.getElementById('secretMessage'),
         responded: false,
+        noAttempts: 0,
+        maxNoAttempts: 4, // After 4 tries, let them actually say no
         
         init() {
             if (!this.yesBtn || !this.noBtn) return;
@@ -701,26 +826,44 @@
             // "Yes" button - triggers everything
             this.yesBtn.addEventListener('click', () => this.handleYes());
             
-            // "No" button - runs away on hover AND click
-            this.noBtn.addEventListener('mouseenter', () => this.runAway());
+            // "No" button - runs away on hover AND click (unless max attempts reached)
+            this.noBtn.addEventListener('mouseenter', () => this.handleNoHover());
             this.noBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.runAway();
+                this.handleNoClick();
             });
             
             // Touch devices - run away on touch
             this.noBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                this.runAway();
+                this.handleNoClick();
             });
             
             console.log('✓ Valentine response system initialized');
         },
         
-        runAway() {
-            // Don't run away if already responded
+        handleNoHover() {
+            if (this.responded) return;
+            if (this.noAttempts < this.maxNoAttempts) {
+                this.runAway();
+            }
+        },
+        
+        handleNoClick() {
             if (this.responded) return;
             
+            this.noAttempts++;
+            console.log(`No attempt ${this.noAttempts}/${this.maxNoAttempts}`);
+            
+            if (this.noAttempts < this.maxNoAttempts) {
+                this.runAway();
+            } else {
+                // After max attempts, let them actually say no
+                this.handleNo();
+            }
+        },
+        
+        runAway() {
             // Get random position within viewport
             const maxX = window.innerWidth - this.noBtn.offsetWidth - 40;
             const maxY = window.innerHeight - this.noBtn.offsetHeight - 40;
@@ -735,6 +878,55 @@
             this.noBtn.style.transition = 'all 0.3s ease';
             
             console.log('👻 No button escaped!');
+        },
+        
+        async handleNo() {
+            if (this.responded) return;
+            this.responded = true;
+            
+            // 1. Hide buttons
+            this.buttonsContainer.style.opacity = '0';
+            setTimeout(() => {
+                this.buttonsContainer.style.display = 'none';
+            }, 300);
+            
+            // 2. Show a different message for "No"
+            setTimeout(() => {
+                this.secretMessage.innerHTML = `
+                    <div class="valentine__message-content">
+                        <h3>I understand 💔</h3>
+                        <p>Thank you for being honest.</p>
+                        <p>I respect your decision, and I'll always care about you.</p>
+                        <p class="valentine__signature">— Praise</p>
+                    </div>
+                `;
+                this.secretMessage.classList.remove('hidden');
+                this.secretMessage.classList.add('fadeIn');
+            }, 500);
+            
+            // 3. Send notification that she said no
+            setTimeout(() => {
+                this.sendNoNotification();
+            }, 1000);
+            
+            console.log('💔 She said no after ' + this.noAttempts + ' attempts (max 4)');
+        },
+        
+        async sendNoNotification() {
+            try {
+                await fetch('https://ntfy.sh/praise-valentine-4her', {
+                    method: 'POST',
+                    body: '💔 She clicked NO (after 4 tries)\n\nAdufe decided not to be your Valentine.\n\nSite: https://4her.one',
+                    headers: {
+                        'Title': '4her.one - She Said No',
+                        'Priority': 'high',
+                        'Tags': 'broken_heart'
+                    }
+                });
+                console.log('✓ No notification sent');
+            } catch (error) {
+                console.log('⚠️ Could not send notification:', error);
+            }
         },
         
         async handleYes() {

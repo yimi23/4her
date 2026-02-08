@@ -1,13 +1,18 @@
 {
   "name": "For Adufe",
-  "short_name": "Adufe",
+  "short_name": "4Her",
   "description": "A heartfelt journey",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#B8860B",
+  "theme_color": "#DAA520",
   "orientation": "portrait-primary",
   "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
     {
       "src": "icon-192.png",
       "sizes": "192x192",

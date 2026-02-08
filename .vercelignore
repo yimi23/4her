@@ -1,0 +1,58 @@
+# Admin files (local only)
+admin.html
+admin-*.html
+open-admin.sh
+ADMIN_README.md
+
+# Development files
+*.md
+!README.md
+.git
+.gitignore
+*.log
+*.sh
+!deploy*.sh
+
+# Documentation
+CHANGES.md
+DEPLOY.md
+DEPLOY_TRACKING.md
+DEPLOYMENT_READY.md
+DEPLOY_TO_DOMAIN.md
+DOWNLOAD_FEATURE.md
+FINAL_TEST.md
+FINAL_UPDATE.md
+GAME_DAY_CHECKLIST.md
+INDIVIDUAL_DOWNLOADS.md
+LATEST_UPDATE.md
+LIVING_SITE.md
+MOBILE_OPTIMIZATION_AUDIT.md
+MOBILE_OPTIMIZATION_COMPLETE.md
+MOBILE_OPTIMIZED.md
+MOBILE_READY.md
+NOTIFICATIONS_STATUS.md
+NOTIFICATION_SETUP_FOR_ADUFE.md
+PROJECT_COMPLETE.md
+PWA_SETUP.md
+QUICK_CHECKLIST.md
+REDESIGN_NOTES.md
+SIMPLE_NOTIFICATIONS.md
+SITE_REVIEW.md
+START_HERE.md
+SUGGESTIONS.md
+TEST_THIS.md
+UPDATE_GUIDE.md
+VALENTINES_DAY_PLAN.md
+WEBHOOK_SETUP.md
+
+# Scripts
+monitor-valentine.sh
+setup-whatsapp-notification.sh
+update-date.sh
+valentine-monitor.js
+valentine-whatsapp-forwarder.js
+compress-videos.sh
+
+# Backup/temp files
+*_backup*
+*.bak
