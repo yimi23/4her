@@ -78,6 +78,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="roadmap-styles.css">
     
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -393,31 +394,104 @@
         </div>
     </section>
 
-    <!-- Finale - The Question -->
+    <!-- Finale - Valentine's Week -->
     <section class="finale" id="finale">
         <div class="container container--narrow">
-            <div class="finale__video">
-                <video controls playsinline>
-                    <source src="videos/last.MOV" type="video/mp4">
-                </video>
-            </div>
-            
             <div class="finale__content">
                 <div class="finale__hearts">
                     <span class="heart">💜</span>
                 </div>
-                <h2 class="finale__question">Something Special Coming Soon</h2>
+                <h2 class="finale__question">This Week With You</h2>
                 <p class="finale__name">Adufe</p>
                 
-                <!-- Intentional Message -->
-                <div class="valentine__message" style="opacity: 1; max-height: none;">
-                    <div class="valentine__message-content">
-                        <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--gray-200); line-height: 1.8; text-align: center; margin-bottom: var(--space-md);">
-                            This space is being prepared with care and intention.
-                        </p>
-                        <p style="font-family: var(--font-serif); font-size: 1.125rem; color: var(--gold); font-style: italic; text-align: center;">
-                            Because some things are worth the wait.
-                        </p>
+                <!-- Valentine's Week Roadmap -->
+                <div class="valentine__roadmap" id="valentineRoadmap">
+                    <!-- Wednesday, February 11 -->
+                    <div class="roadmap__card" data-unlock-date="2026-02-10T23:59:00" data-day="wednesday">
+                        <div class="roadmap__card-header">
+                            <div class="roadmap__day-info">
+                                <div class="roadmap__title">A Letter and a Gift</div>
+                                <div class="roadmap__date">Wednesday, February 11</div>
+                            </div>
+                            <div class="roadmap__lock-indicator">
+                                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="roadmap__card-content">
+                            <p>I wrote you something. Got you something too.</p>
+                        </div>
+                        <div class="roadmap__locked-message">
+                            Not yet. Be patient.
+                        </div>
+                    </div>
+
+                    <!-- Thursday, February 12 -->
+                    <div class="roadmap__card" data-unlock-date="2026-02-11T23:59:00" data-day="thursday">
+                        <div class="roadmap__card-header">
+                            <div class="roadmap__day-info">
+                                <div class="roadmap__title">Dinner Date</div>
+                                <div class="roadmap__date">Thursday, February 12 — 8:30 PM</div>
+                            </div>
+                            <div class="roadmap__lock-indicator">
+                                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="roadmap__card-content">
+                            <p>Dinner at Brass Cafe. Eight thirty. Just us. Dress up for me.</p>
+                        </div>
+                        <div class="roadmap__locked-message">
+                            Not yet. Be patient.
+                        </div>
+                    </div>
+
+                    <!-- Friday, February 13 -->
+                    <div class="roadmap__card" data-unlock-date="2026-02-12T23:59:00" data-day="friday">
+                        <div class="roadmap__card-header">
+                            <div class="roadmap__day-info">
+                                <div class="roadmap__title">Skating Night</div>
+                                <div class="roadmap__date">Friday, February 13 — 8:00 PM</div>
+                            </div>
+                            <div class="roadmap__lock-indicator">
+                                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="roadmap__card-content">
+                            <p>Skating. I can't skate. You'll laugh. Come anyway.</p>
+                        </div>
+                        <div class="roadmap__locked-message">
+                            Not yet. Be patient.
+                        </div>
+                    </div>
+
+                    <!-- Saturday, February 14 - VALENTINE'S DAY -->
+                    <div class="roadmap__card" data-unlock-date="2026-02-13T23:59:00" data-day="saturday">
+                        <div class="roadmap__card-header">
+                            <div class="roadmap__day-info">
+                                <div class="roadmap__title">Valentine's Morning</div>
+                                <div class="roadmap__date">Saturday, February 14 — Morning</div>
+                            </div>
+                            <div class="roadmap__lock-indicator">
+                                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="roadmap__card-content">
+                            <p>You work at eleven. Bringing breakfast before you leave.</p>
+                        </div>
+                        <div class="roadmap__locked-message">
+                            Not yet. Be patient.
+                        </div>
                     </div>
                 </div>
                 
@@ -448,6 +522,21 @@
             </svg>
         </button>
         <div class="lightbox__content" id="lightboxContent"></div>
+    </div>
+
+    <!-- Roadmap Modal -->
+    <div class="roadmap-modal" id="roadmapModal">
+        <div class="roadmap-modal__backdrop" id="roadmapBackdrop"></div>
+        <div class="roadmap-modal__card">
+            <button class="roadmap-modal__close" id="roadmapModalClose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="roadmap-modal__content" id="roadmapModalContent">
+                <!-- Dynamic content loaded here -->
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

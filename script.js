@@ -32,24 +32,40 @@ document.addEventListener('DOMContentLoaded', function() {
     // Build letter preview grid
     function buildLetterGrid() {
         const grid = document.getElementById('letterGrid');
+        const now = new Date();
         
-        grid.innerHTML = lettersData.map(letter => `
-            <div class="letter__card" data-letter-id="${letter.id}">
-                <div class="card__header">
-                    <div class="card__date">${letter.date}</div>
-                    <h3 class="card__title">${letter.title}</h3>
+        grid.innerHTML = lettersData.map(letter => {
+            const isLocked = letter.unlockDate && new Date(letter.unlockDate) > now;
+            
+            return `
+                <div class="letter__card ${isLocked ? 'locked' : ''}" data-letter-id="${letter.id}" data-unlock-date="${letter.unlockDate || ''}">
+                    <div class="card__header">
+                        <div class="card__date">${letter.date}</div>
+                        <h3 class="card__title">${letter.title}</h3>
+                        ${isLocked ? '<div class="card__lock-icon">🔒</div>' : ''}
+                    </div>
+                    <div class="card__preview">"${letter.preview}"</div>
+                    <button class="card__read-btn">${isLocked ? 'Locked' : 'Read Letter →'}</button>
+                    ${isLocked ? '<div class="card__locked-msg">Available ' + formatUnlockTime(letter.unlockDate) + '</div>' : ''}
                 </div>
-                <div class="card__preview">"${letter.preview}"</div>
-                <button class="card__read-btn">Read Letter →</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
         
         // Add click handlers
         grid.querySelectorAll('.letter__card').forEach(card => {
             card.addEventListener('click', () => {
-                openLetter(card.dataset.letterId);
+                if (!card.classList.contains('locked')) {
+                    openLetter(card.dataset.letterId);
+                }
             });
         });
+    }
+    
+    // Format unlock time nicely
+    function formatUnlockTime(dateStr) {
+        const date = new Date(dateStr);
+        const options = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+        return date.toLocaleDateString('en-US', options);
     }
     
     // Setup modal functionality
@@ -1084,6 +1100,264 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update on page load
     updateLastUpdatedDate();
+    
+    // ================================
+    // VALENTINE'S WEEK ROADMAP UNLOCK SYSTEM
+    // ================================
+    
+    const ValentineRoadmap = {
+        init() {
+            this.checkUnlockStatus();
+            // Check every minute for unlocks
+            setInterval(() => this.checkUnlockStatus(), 60000);
+            console.log('✓ Valentine Roadmap initialized - checking unlock times');
+        },
+        
+        checkUnlockStatus() {
+            const cards = document.querySelectorAll('.roadmap__card');
+            const now = new Date();
+            
+            cards.forEach(card => {
+                const unlockDateStr = card.getAttribute('data-unlock-date');
+                const unlockDate = new Date(unlockDateStr);
+                
+                if (now >= unlockDate) {
+                    this.unlockCard(card);
+                } else {
+                    this.lockCard(card);
+                }
+            });
+        },
+        
+        unlockCard(card) {
+            if (!card.classList.contains('unlocked')) {
+                card.classList.remove('locked');
+                card.classList.add('unlocked');
+                
+                // Add a subtle animation
+                setTimeout(() => {
+                    card.style.animation = 'unlock-pulse 0.6s ease-out';
+                }, 100);
+                
+                // Add click handler for modal
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    const day = card.getAttribute('data-day');
+                    if (window.RoadmapModal) {
+                        window.RoadmapModal.open(day);
+                    }
+                });
+                
+                console.log('✨ Card unlocked:', card.querySelector('.roadmap__date').textContent);
+            }
+        },
+        
+        lockCard(card) {
+            if (!card.classList.contains('locked')) {
+                card.classList.remove('unlocked');
+                card.classList.add('locked');
+            }
+        }
+    };
+    
+    // ================================
+    // ROADMAP MODAL SYSTEM
+    // ================================
+    
+    window.RoadmapModal = {
+        modal: null,
+        backdrop: null,
+        content: null,
+        closeBtn: null,
+        
+        messages: {
+            wednesday: {
+                title: "A Letter and a Gift",
+                date: "Wednesday, February 11",
+                message: `
+                    <p>I wrote you something.<br>And I got you a little something too.<br>Read the letter first though.</p>
+                `
+            },
+            thursday: {
+                title: "Dinner Date",
+                date: "Thursday, February 12 — 8:30 PM",
+                message: `
+                    <p>Picking you up at 8:15.<br>Dinner at Brass Cafe, 8:30.<br>Dress up for me.</p>
+                `
+            },
+            friday: {
+                title: "Skating Night",
+                date: "Friday, February 13 — 8:00 PM",
+                message: `
+                    <p>Picking you up at 7:40.<br>We're going skating at 8.</p>
+                    <p>I can't skate but I'm learning for you.<br>Come laugh at me.</p>
+                `
+            },
+            saturday: {
+                title: "Valentine's Morning",
+                date: "Saturday, February 14 — Morning",
+                message: `
+                    <p>You work at 11.<br>I'm bringing you breakfast before your day starts.</p>
+                `
+            }
+        },
+        
+        init() {
+            this.modal = document.getElementById('roadmapModal');
+            this.backdrop = document.getElementById('roadmapBackdrop');
+            this.content = document.getElementById('roadmapModalContent');
+            this.closeBtn = document.getElementById('roadmapModalClose');
+            
+            if (!this.modal) return;
+            
+            // Close button
+            this.closeBtn.addEventListener('click', () => this.close());
+            
+            // Click backdrop to close
+            this.backdrop.addEventListener('click', () => this.close());
+            
+            // ESC key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+                    this.close();
+                }
+            });
+            
+            console.log('✓ Roadmap modal system initialized');
+        },
+        
+        open(day) {
+            const data = this.messages[day];
+            if (!data) return;
+            
+            this.content.innerHTML = `
+                <h2 class="roadmap-modal__title">${data.title}</h2>
+                <div class="roadmap-modal__date">${data.date}</div>
+                <div class="roadmap-modal__message">${data.message}</div>
+            `;
+            
+            this.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            console.log('📅 Roadmap modal opened:', day);
+        },
+        
+        close() {
+            this.modal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            console.log('✕ Roadmap modal closed');
+        }
+    };
+    
+    RoadmapModal.init();
+    ValentineRoadmap.init();
+    
+    // ================================
+    // UNLOCK NOTIFICATION SYSTEM
+    // ================================
+    
+    const UnlockNotifier = {
+        notifiedItems: new Set(),
+        
+        init() {
+            // Load previously notified items from localStorage
+            const stored = localStorage.getItem('4her_notified_unlocks');
+            if (stored) {
+                this.notifiedItems = new Set(JSON.parse(stored));
+            }
+            
+            // Check for unlocks every minute
+            this.checkUnlocks();
+            setInterval(() => this.checkUnlocks(), 60000);
+            console.log('✓ Unlock notification system initialized');
+        },
+        
+        checkUnlocks() {
+            const now = new Date();
+            
+            // Check letters
+            lettersData.forEach(letter => {
+                if (letter.unlockDate) {
+                    const unlockDate = new Date(letter.unlockDate);
+                    const key = `letter_${letter.id}`;
+                    
+                    if (now >= unlockDate && !this.notifiedItems.has(key)) {
+                        this.sendNotification('letter', letter);
+                        this.notifiedItems.add(key);
+                        this.saveNotified();
+                        
+                        // Rebuild letter grid to show unlocked
+                        buildLetterGrid();
+                    }
+                }
+            });
+            
+            // Check roadmap cards
+            document.querySelectorAll('.roadmap__card').forEach(card => {
+                const unlockDateStr = card.getAttribute('data-unlock-date');
+                const unlockDate = new Date(unlockDateStr);
+                const titleEl = card.querySelector('.roadmap__title');
+                const dateEl = card.querySelector('.roadmap__date');
+                const title = titleEl ? titleEl.textContent : '';
+                const date = dateEl ? dateEl.textContent : '';
+                const key = `roadmap_${unlockDateStr}`;
+                
+                if (now >= unlockDate && !this.notifiedItems.has(key)) {
+                    this.sendNotification('roadmap', { title, date, unlockDate: unlockDateStr });
+                    this.notifiedItems.add(key);
+                    this.saveNotified();
+                }
+            });
+        },
+        
+        async sendNotification(type, item) {
+            try {
+                let title = '';
+                let message = '';
+                
+                if (type === 'letter') {
+                    title = '💌 New Letter from Praise';
+                    message = `"${item.title}" is now available to read`;
+                } else if (type === 'roadmap') {
+                    title = '💜 Valentine\'s Week Update';
+                    message = `${item.title} - ${item.date} is now unlocked!`;
+                }
+                
+                // Send via ntfy.sh
+                await fetch('https://ntfy.sh/praise-valentine-4her', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                        'Title': title,
+                        'Priority': 'high',
+                        'Tags': 'heart,love'
+                    },
+                    body: message
+                });
+                
+                console.log('📱 Notification sent:', title, '-', message);
+            } catch (error) {
+                console.error('Failed to send unlock notification:', error);
+            }
+        },
+        
+        saveNotified() {
+            localStorage.setItem('4her_notified_unlocks', JSON.stringify([...this.notifiedItems]));
+        }
+    };
+    
+    // Initialize after letters are loaded
+    if (lettersData.length > 0) {
+        UnlockNotifier.init();
+    } else {
+        // Wait for letters to load
+        setTimeout(() => {
+            if (lettersData.length > 0) {
+                UnlockNotifier.init();
+            }
+        }, 2000);
+    }
     
     // ================================
     // CONSOLE SIGNATURE
