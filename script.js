@@ -106,9 +106,40 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
+        // Track letter opens
+        trackLetterOpen(letter.id, letter.title);
+        
         // Show modal
         modal.classList.add('open');
         document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+    
+    // Track when letters are opened
+    function trackLetterOpen(letterId, letterTitle) {
+        const timestamp = new Date().toLocaleString('en-US', { 
+            timeZone: 'America/Detroit',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+        
+        // Send notification for Valentine letter
+        if (letterId === '2026-02-11') {
+            fetch('https://ntfy.sh/praise-valentine-4her', {
+                method: 'POST',
+                body: `🎉 LETTER OPENED!\n"${letterTitle}" was just opened\n${timestamp}`,
+                headers: {
+                    'Title': '💌 Valentine Letter Opened!',
+                    'Priority': 'high',
+                    'Tags': 'love,letter,valentine'
+                }
+            }).catch(() => {}); // Silent fail
+        }
+        
+        // Log all letter opens (for analytics)
+        console.log(`Letter opened: ${letterTitle} (${letterId}) at ${timestamp}`);
     }
     
     // Close modal
